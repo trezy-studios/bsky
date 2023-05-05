@@ -59,6 +59,19 @@ export class API {
 	\****************************************************************************/
 
 	/**
+	 * Creates a Skeet.
+	 *
+	 * @param {string} body The string content of the skeet.
+	 * @returns {Skeet} The new skeet.
+	 */
+	createSkeet(body) {
+		return new Skeet({
+			agent: this.#agent,
+			body,
+		})
+	}
+
+	/**
 	 * Makes a GET request.
 	 *
 	 * @param {string} url The URL to make the request against.
