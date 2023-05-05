@@ -1,0 +1,33 @@
+{
+  "packageManager": "yarn@3.2.2",
+  "private": true,
+  "workspaces": [
+    "packages/bot",
+    "packages/cli",
+    "packages/lib"
+  ],
+  "scripts": {
+    "dev:bot": "yarn workspace @trezystudios/bsky-bot dev",
+    "generate-types:lib": "yarn workspace @trezystudios/bsky-lib generate-types",
+    "lint:bot": "yarn workspace @trezystudios/bsky-bot eslint ./src/",
+    "lint:cli": "yarn workspace @trezystudios/bsky-cli eslint ./src/",
+    "lint:lib": "yarn workspace @trezystudios/bsky-lib eslint ./src/",
+    "start:bot": "yarn workspace @trezystudios/bsky-bot start"
+  },
+  "engines": {
+    "node": ">=19"
+  },
+  "dependencies": {
+    "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.39.0",
+    "eslint-plugin-editorconfig": "^4.0.2",
+    "eslint-plugin-jsdoc": "^43.1.1",
+    "eslint-plugin-optimize-regex": "^1.2.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-security": "^1.7.1",
+    "eslint-plugin-sort-class-members": "^1.17.1",
+    "eslint-plugin-unused-imports": "^2.0.0"
+  }
+}

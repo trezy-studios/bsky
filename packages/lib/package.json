@@ -1,0 +1,43 @@
+{
+  "name": "@trezystudios/bsky-lib",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "BSD-3-Clause",
+  "packageManager": "yarn@3.2.2",
+  "type": "module",
+  "types": "./types/types.d.ts",
+  "scripts": {
+    "dev": "nodemon ./src/index.js",
+    "generate-types": "tsc --project tsconfig.json",
+    "generate-types.bak": "jsdoc -c jsdoc.json -t node_modules/tsd-jsdoc/dist -r src/. -d types",
+    "lint": "eslint ./src/",
+    "start": "node ./src/index.js"
+  },
+  "dependencies": {
+    "@atproto/api": "^0.2.11",
+    "@atproto/xrpc": "^0.1.0",
+    "@ipld/car": "^5.1.1",
+    "@koa/cors": "^3.4.3",
+    "bufferutil": "^4.0.7",
+    "cbor-x": "^1.5.2",
+    "discord.js": "^14.9.0",
+    "dotenv": "^16.0.3",
+    "koa": "^2.14.2",
+    "koa-body": "^5.0.0",
+    "koa-compress": "^5.1.1",
+    "koa-no-trailing-slash": "^2.1.0",
+    "koa-router": "^12.0.0",
+    "multiformats": "^11.0.2",
+    "node-fetch": "^3.3.1",
+    "utf-8-validate": "^6.0.3",
+    "ws": "^8.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "better-docs": "^2.7.2",
+    "jsdoc": "^4.0.2",
+    "nodemon": "^2.0.22",
+    "tsd-jsdoc": "^2.5.0",
+    "typescript": "^5.0.4"
+  }
+}

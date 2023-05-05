@@ -1,0 +1,102 @@
+/**
+ * A bsky user.
+ */
+export class User {
+	/****************************************************************************\
+	 * Private instance properties
+	\****************************************************************************/
+
+	#params
+
+	/** @type {object} */
+	#profile
+
+	/** @type {object} */
+	#repo
+
+
+
+
+
+	/****************************************************************************\
+	 * Constructor
+	\****************************************************************************/
+
+	/**
+	 * Creates a new bsky user.
+	 *
+	 * @param {object} params Parameters required for creating a user.
+	 * @param {import('@atproto/api').BskyAgent} params.agent bsky agent.
+	 * @param {string} params.did The dID of the user.
+	 */
+	constructor(params) {
+		const {
+			agent,
+			did,
+		} = params
+
+		if (!agent) {
+			throw new Error('agent is required')
+		}
+
+		if (!did) {
+			throw new Error('did is required')
+		}
+
+		this.#params = params
+	}
+
+
+
+
+
+	/****************************************************************************\
+	 * Public instance methods
+	\****************************************************************************/
+
+	/**
+	 * Hydrates a user with their repo and profile data.
+	 */
+	async hydrate() {
+		this.#repo = await this.agent.com.atproto.repo.describeRepo({ repo: this.did })
+		this.#profile = await this.agent.getProfile({ actor: this.#repo.data.handle })
+	}
+
+
+
+
+
+	/****************************************************************************\
+	 * Public instance getters/setters
+	\****************************************************************************/
+
+	/** @returns {import('@atproto/api').BskyAgent} The bsky agent. */
+	get agent() {
+		return this.#params.agent
+	}
+
+	/** @returns {string} The URL to the user's avatar. */
+	get avatar() {
+		return this.#profile.data.avatar
+	}
+
+	/** @returns {string} The user's DID. */
+	get did() {
+		return this.#params.did
+	}
+
+	/** @returns {string} The user's display name. */
+	get displayName() {
+		return this.#profile.data.displayName
+	}
+
+	/** @returns {string} The user's handle. */
+	get handle() {
+		return this.#profile.data.handle
+	}
+
+	/** @returns {string} The user's profile URL. */
+	get url() {
+		return `https://staging.bsky.app/profile/${this.handle}`
+	}
+}

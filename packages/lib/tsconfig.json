@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"allowJs": true,
+		"allowSyntheticDefaultImports": true,
+		"checkJs": true,
+		"declaration": true,
+		"emitDeclarationOnly": true,
+    "module": "esnext",
+		"moduleResolution": "nodenext",
+		"outFile": "./types/types",
+    "target": "esnext"
+	},
+	"exclude": [
+		"**/*.ts",
+		".github",
+		".yarn",
+		"node_modules"
+	]
+}

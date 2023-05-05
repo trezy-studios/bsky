@@ -1,0 +1,27 @@
+{
+  "name": "@trezystudios/bsky-cli",
+  "description": "A developer CLI for retrieving info from bsky.",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "BSD-3-Clause",
+  "packageManager": "yarn@3.2.2",
+  "type": "module",
+  "bin": {
+    "bsky": "./src/index.js"
+  },
+  "scripts": {
+    "dev": "nodemon ./src/index.js",
+    "lint": "eslint ./src/",
+    "start": "node ./src/index.js"
+  },
+  "dependencies": {
+    "@trezystudios/bsky-lib": "workspace:*",
+    "ascii-art": "^2.8.5",
+    "commander": "^10.0.1",
+    "dotenv": "^16.0.3",
+    "inquirer": "^9.2.0"
+  },
+  "devDependencies": {
+    "better-docs": "^2.7.2"
+  }
+}
