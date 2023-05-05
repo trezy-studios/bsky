@@ -9,7 +9,6 @@
   "scripts": {
     "dev": "nodemon ./src/index.js",
     "generate-types": "tsc --project tsconfig.json",
-    "generate-types.bak": "jsdoc -c jsdoc.json -t node_modules/tsd-jsdoc/dist -r src/. -d types",
     "lint": "eslint ./src/",
     "start": "node ./src/index.js"
   },
@@ -37,7 +36,6 @@
     "better-docs": "^2.7.2",
     "jsdoc": "^4.0.2",
     "nodemon": "^2.0.22",
-    "tsd-jsdoc": "^2.5.0",
     "typescript": "^5.0.4"
   }
 }
