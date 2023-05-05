@@ -6,6 +6,7 @@ import bsky from '@atproto/api'
 
 
 // Local imports
+import { BSKY_SERVICE_URL } from './helpers/defaults.js'
 import { Skeet } from './Skeet.js'
 
 
@@ -35,7 +36,7 @@ export class API {
 	 *
 	 * @param {string} serviceURL The URL to use for the bsky agent.
 	 */
-	constructor(serviceURL = `https://${process.env.BSKY_SERVICE_URL}`) {
+	constructor(serviceURL = `https://${BSKY_SERVICE_URL}`) {
 		try {
 			new URL(serviceURL)
 		} catch (error) {
