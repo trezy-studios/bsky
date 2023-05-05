@@ -22,7 +22,7 @@ import {
  * @param {object} options Options passed from the CLI.
  */
 export async function handleLogin(options) {
-	let session = await getSession()
+	const session = await getSession()
 
 	if (session && !options.force) {
 		const { overwriteSession } = await inquirer.prompt([
@@ -64,13 +64,11 @@ export async function handleLogin(options) {
 
 	try {
 		if (session) {
-			session = await bskyAPI.resumeSession(session)
+			await bskyAPI.resumeSession(session)
 		} else {
 			const response = await bskyAPI.login(username, password)
-			session = response
+			await saveSession(response)
 		}
-
-		await saveSession(session)
 	} catch (error) {
 		console.log(error)
 	}
