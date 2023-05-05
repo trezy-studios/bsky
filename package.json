@@ -23,7 +23,7 @@
   "devDependencies": {
     "eslint": "^8.39.0",
     "eslint-plugin-editorconfig": "^4.0.2",
-    "eslint-plugin-jsdoc": "^43.1.1",
+    "eslint-plugin-jsdoc": "^43.2.0",
     "eslint-plugin-optimize-regex": "^1.2.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-security": "^1.7.1",

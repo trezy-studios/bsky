@@ -19,7 +19,7 @@
     "ascii-art": "^2.8.5",
     "commander": "^10.0.1",
     "dotenv": "^16.0.3",
-    "inquirer": "^9.2.0"
+    "inquirer": "^9.2.1"
   },
   "devDependencies": {
     "better-docs": "^2.7.2"
