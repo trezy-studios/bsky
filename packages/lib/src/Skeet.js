@@ -6,6 +6,7 @@ import bsky from '@atproto/api'
 
 
 // Local imports
+import { parseATURL } from './helpers/parseATURL.js'
 import { User } from './User.js'
 
 
@@ -30,13 +31,17 @@ export class Skeet {
 	#byLineText
 
 	/** @type {object} */
-	#data
+	#data = {
+		value: {
+			text: '',
+		},
+	}
 
 	/** @type {boolean} */
 	#isPublished = false
 
 	/** @type {string} */
-	#markdown
+	#markdown = ''
 
 	/** @type {object} */
 	#params
@@ -54,14 +59,15 @@ export class Skeet {
 	 *
 	 * @param {object} params Parameters required for creating a skeet.
 	 * @param {import('@atproto/api').BskyAgent} params.agent bsky agent.
-	 * @param {string} params.body The CID of the skeet.
-	 * @param {string} params.cid The CID of the skeet.
-	 * @param {string} params.did The DID of the author of the skeet.
-	 * @param {string} params.rkey The rkey of the skeet.
+	 * @param {string} [params.body] The CID of the skeet.
+	 * @param {string} [params.cid] The CID of the skeet.
+	 * @param {string} [params.did] The DID of the author of the skeet.
+	 * @param {string} [params.rkey] The rkey of the skeet.
 	 */
 	constructor(params) {
 		const {
 			agent,
+			body,
 			cid,
 			did,
 			rkey,
@@ -71,19 +77,25 @@ export class Skeet {
 			throw new Error('agent is required')
 		}
 
-		if (!cid) {
-			throw new Error('cid is required')
-		}
-
-		if (!did) {
-			throw new Error('did is required')
-		}
-
-		if (!rkey) {
-			throw new Error('rkey is required')
-		}
-
 		this.#params = params
+
+		if (body) {
+			this.setBody(body)
+		} else {
+			if (!cid) {
+				throw new Error('cid is required')
+			}
+
+			if (!did) {
+				throw new Error('did is required')
+			}
+
+			if (!rkey) {
+				throw new Error('rkey is required')
+			}
+
+			this.#isPublished = true
+		}
 	}
 
 
@@ -100,6 +112,10 @@ export class Skeet {
 	 * @returns {Promise<Skeet>} The hydrated skeet.
 	 */
 	async hydrate() {
+		if (!this.#isPublished) {
+			throw new Error('Can\'t hydrate an unpublished post!')
+		}
+
 		this.#data = await this.agent.getPost({
 			cid: this.cid,
 			repo: this.did,
@@ -114,6 +130,57 @@ export class Skeet {
 		await this.#author.hydrate()
 
 		return this
+	}
+
+	/**
+	 * Publishes this skeet to the skyline.
+	 *
+	 * @returns {Promise<Skeet>} Returns itself for chaining.
+	 */
+	async publish() {
+		const response = await this.agent.post({
+			createdAt: (new Date).toISOString(),
+			text: this.text,
+		})
+
+		this.#params.cid = response.cid
+
+		const {
+			did,
+			rkey,
+		} = parseATURL(response.uri)
+
+		this.#params.did = did
+		this.#params.rkey = rkey
+		this.#isPublished = true
+
+		await this.hydrate()
+
+		return this
+	}
+
+	/**
+	 * Updates the body ni all relevant fields.
+	 *
+	 * @param {string} body The body to be set.
+	 */
+	setBody(body) {
+		this.#data.value.text = body
+
+		const richText = new bsky.RichText({ text: body })
+		richText.detectFacets(this.agent)
+
+		this.#markdown = ''
+
+		for (const segment of richText.segments()) {
+			if (segment.isLink()) {
+				this.#markdown += `[${segment.text}](${segment.link?.uri})`
+			} else if (segment.isMention()) {
+				this.#markdown += `[${segment.text}](https://staging.bsky.app/user/${segment.mention?.did})`
+			} else {
+				this.#markdown += segment.text
+			}
+		}
 	}
 
 
@@ -174,23 +241,6 @@ export class Skeet {
 
 	/** @returns {string} The body of this skeet with markdown formatting. */
 	get markdown() {
-		if (!this.#markdown) {
-			const richText = new bsky.RichText({ text: this.text })
-			richText.detectFacets(this.agent)
-
-			this.#markdown = ''
-
-			for (const segment of richText.segments()) {
-				if (segment.isLink()) {
-					this.#markdown += `[${segment.text}](${segment.link?.uri})`
-				} else if (segment.isMention()) {
-					this.#markdown += `[${segment.text}](https://staging.bsky.app/user/${segment.mention?.did})`
-				} else {
-					this.#markdown += segment.text
-				}
-			}
-		}
-
 		return this.#markdown
 	}
 

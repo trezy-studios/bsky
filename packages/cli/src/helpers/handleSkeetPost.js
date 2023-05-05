@@ -14,10 +14,9 @@ import { verifySession } from './config.js'
 /**
  * Handler for `bsky skeet post`.
  *
- * @param {string} content The content of the skeet.
- * @param {SkeetPostOptions} options A hash of options that were passed to the command.
+ * @param {string} body The content of the skeet.
  */
-export async function handleSkeetPost(content, options) {
+export async function handleSkeetPost(body) {
 	const isLoggedIn = await verifySession()
 
 	if (!isLoggedIn) {
@@ -27,10 +26,9 @@ export async function handleSkeetPost(content, options) {
 
 	const bskyAPI = await login()
 
-	// bskyAPI.createSkeet({ body: content })
+	const skeet = bskyAPI.createSkeet(body)
 
-	console.log({
-		content,
-		options,
-	})
+	await skeet.publish()
+
+	console.log(`Success! Skeet is available at ${skeet.url}`)
 }

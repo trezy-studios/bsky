@@ -72,7 +72,7 @@ export async function saveSession(sessionData) {
 /**
  * Verifies that a session file exists.
  *
- * @returns {boolean} Whether a session file exists.
+ * @returns {Promise<boolean>} Whether a session file exists.
  */
 export async function verifySession() {
 	await validateConfig()

@@ -72,40 +72,6 @@ export class API {
 	}
 
 	/**
-	 * Makes a GET request.
-	 *
-	 * @param {string} url The URL to make the request against.
-	 * @param {object} params Parameters to send wih the request.
-	 */
-	async get(url, params) {
-		// TODO: Make this do something.
-		await new Promise(resolve => {
-			resolve({
-				params,
-				url,
-			})
-		})
-	}
-
-	/**
-	 * Makes a POST request.
-	 *
-	 * @param {string} url The URL to make the request against.
-	 * @param {object} params Parameters to send wih the request.
-	 * @param {object} body A body to send with the request.
-	 */
-	async post(url, params, body) {
-		// TODO: Make this do something.
-		await new Promise(resolve => {
-			resolve({
-				body,
-				params,
-				url,
-			})
-		})
-	}
-
-	/**
 	 * Authenticates the agent o make privileged requests.
 	 *
 	 * @param {string} username The username with which to authenticate. This is the same as the user's handle.
