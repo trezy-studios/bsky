@@ -4,10 +4,13 @@
 		"allowSyntheticDefaultImports": true,
 		"checkJs": true,
 		"declaration": true,
+		"declarationDir": "types",
+		"declarationMap": true,
 		"emitDeclarationOnly": true,
     "module": "esnext",
 		"moduleResolution": "nodenext",
-		"outFile": "./types/types",
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
     "target": "esnext"
 	},
 	"exclude": [

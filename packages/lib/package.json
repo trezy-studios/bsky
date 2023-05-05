@@ -5,7 +5,7 @@
   "license": "BSD-3-Clause",
   "packageManager": "yarn@3.2.2",
   "type": "module",
-  "types": "./types/types.d.ts",
+  "types": "./types/index.d.ts",
   "scripts": {
     "dev": "nodemon ./src/index.js",
     "generate-types": "tsc --project tsconfig.json",

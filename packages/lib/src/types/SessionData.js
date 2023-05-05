@@ -1,10 +1,20 @@
+/** @typedef {import('@atproto/api').AtpSessionData} AtpSessionData */
+
 /**
  * Data for an authenticated session.
  *
- * @property {string} accessJwt The access JWT.
- * @property {string} did The user's dID.
- * @property {string} [email] The user's email address.
- * @property {string} handle The user's handle.
- * @property {string} refreshJwt The refresh JWT.
+ * @implements {AtpSessionData}
  */
-export const SessionData = {}
+export class SessionData {
+	/** @type {string} The access JWT. */
+	accessJwt
+
+	/** @type {string} The user's dID. */
+	did
+
+	/** @type {string} The user's handle. */
+	handle
+
+	/** @type {string} The refresh JWT.} */
+	refreshJwt
+}

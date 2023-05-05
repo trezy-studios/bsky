@@ -96,7 +96,7 @@ export class API {
 	 *
 	 * @param {string} username The username with which to authenticate. This is the same as the user's handle.
 	 * @param {string} password The password with which to authenticate. For now, this should be an app password.
-	 * @returns {Promise<object>} The login response? Maybe? I haven't tested yet to verify what this actually is. 😅
+	 * @returns {Promise<import('./types/SessionData.js').SessionData>} Session data.
 	 */
 	async login(username, password) {
 		const response = await this.#agent.login({
@@ -111,7 +111,7 @@ export class API {
 	 * Resumes an existing session using an access JWT, a refresh JWT, and a dID.
 	 *
 	 * @param {import('./types/SessionData.js').SessionData} sessionData An object containing data for the session to resume.
-	 * @returns {Promise<import('./types/SessionData.js').SessionData>} The updated session data.
+	 * @returns {Promise<object>} Updated session data.
 	 */
 	async resumeSession(sessionData) {
 		const response = await this.#agent.resumeSession(sessionData)
