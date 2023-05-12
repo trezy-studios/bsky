@@ -3,9 +3,51 @@
  */
 export class User {
 	/****************************************************************************\
+	 * Public static properties
+	\****************************************************************************/
+
+	/** @type {Set<User>} */
+	static collection = new Set
+
+	/** @type {Map<string, User>} */
+	static collectionByDID = new Map
+
+
+
+
+
+	/****************************************************************************\
+	 * Public static methods
+	\****************************************************************************/
+
+	/**
+	 * Attempts to retrieve a user from the cache based on their dID.
+	 *
+	 * @param {string} did The dID of the user.
+	 * @returns {User} The cached user.
+	 */
+	static getByDID(did) {
+		return User.collectionByDID.get(did)
+	}
+
+
+
+
+
+	/****************************************************************************\
 	 * Private instance properties
 	\****************************************************************************/
 
+	/** @type {Promise<User>} */
+	#hydrationPromise
+
+	/** @type {boolean} */
+	#isHydrated = false
+
+	/** @type {boolean} */
+	#isHydrating = false
+
+	/** @type {object} */
 	#params
 
 	/** @type {object} */
@@ -25,7 +67,7 @@ export class User {
 	/**
 	 * Creates a new bsky user.
 	 *
-	 * @param {object} params Parameters required for creating a user.
+	 * @param {object} params Parameters for creating a user.
 	 * @param {import('@atproto/api').BskyAgent} params.agent bsky agent.
 	 * @param {string} params.did The dID of the user.
 	 */
@@ -44,6 +86,34 @@ export class User {
 		}
 
 		this.#params = params
+
+		this.#addToCollections()
+	}
+
+
+
+
+
+	/****************************************************************************\
+	 * Private instance methods
+	\****************************************************************************/
+
+	/**
+	 * Adds this skeet to the appropriate collections.
+	 */
+	#addToCollections() {
+		User.collection.add(this)
+		User.collectionByDID.set(this.did, this)
+	}
+
+	/**
+	 * Hydrates a user with their repo and profile data.
+	 *
+	 * @returns {Promise} A promise which resolves when the user has been hydrated.
+	 */
+	async #hydrate() {
+		this.#repo = await this.agent.com.atproto.repo.describeRepo({ repo: this.did })
+		this.#profile = await this.agent.getProfile({ actor: this.#repo.data.handle })
 	}
 
 
@@ -56,10 +126,24 @@ export class User {
 
 	/**
 	 * Hydrates a user with their repo and profile data.
+	 *
+	 * @returns {Promise<User>} The user.
 	 */
 	async hydrate() {
-		this.#repo = await this.agent.com.atproto.repo.describeRepo({ repo: this.did })
-		this.#profile = await this.agent.getProfile({ actor: this.#repo.data.handle })
+		if (this.#isHydrated) {
+			return this
+		}
+
+		if (this.#isHydrating) {
+			return this.#hydrationPromise
+		}
+
+		this.#isHydrating = true
+		this.#hydrationPromise = await this.#hydrate()
+		this.#isHydrated = true
+		this.#isHydrating = false
+
+		return this
 	}
 
 
