@@ -15,6 +15,6 @@ export class SessionData {
 	/** @type {string} The user's handle. */
 	handle
 
-	/** @type {string} The refresh JWT.} */
+	/** @type {string} The refresh JWT. */
 	refreshJwt
 }
