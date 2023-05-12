@@ -26,7 +26,7 @@ export async function handleSkeetPost(body) {
 
 	const bskyAPI = await login()
 
-	const skeet = bskyAPI.createSkeet(body)
+	const skeet = bskyAPI.createSkeet({ body })
 
 	await skeet.publish()
 
